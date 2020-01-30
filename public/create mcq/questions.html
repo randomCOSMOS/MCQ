@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <link rel="stylesheet" href="style.css">
+
+    <title>Add Question</title>
+</head>
+
+<body>
+    <h1>Create MCQ</h1>
+    <a href="../index.html">See Questions</a> | <a href="../create mcq/questions.html">Add Questions</a>
+
+    <form>
+        <label for="question">Add your question:</label>
+        <input type="text" name="question" id="question">
+        <br>
+
+        <label for="options">Enter options:</label>
+        a) <input type="text" name="optionA" id="options">
+        b) <input type="text" name="optionB" id="options">
+        c) <input type="text" name="optionC" id="options">
+        <br>
+
+        <label for="correctOption">Enter corrct option:</label>
+        <input type="text" name="Correct Option" id="correctOption">
+        <br>
+
+        <input onclick="formSubmitted()" type="button" value="SUBMIT">
+        <input onclick="clearDatabase()" type="button" value="Clear Data base">
+    </form>
+
+
+    <script src="../Jquery/jquery.js"></script>
+    <script src="./questions.js"></script>
+</body>
+
+</html>
