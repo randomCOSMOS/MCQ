@@ -1,7 +1,45 @@
-a{
+a {
     text-decoration: none;
 }
 
-a:hover{
+a:hover {
     text-decoration: underline;
+}
+
+h4 {
+    display: inline;
+    margin-right: 20px;
+}
+
+h4+input {
+    margin-top: 20px;
+}
+
+input[value="SUBMIT"] {
+    margin-top: 20px;
+}
+
+.result {
+    text-align: center;
+    position: fixed;
+    top: 25%;
+    left: 15%;
+    height: 0vh;
+    width: 0vw;
+    opacity: 0;
+    background-color: maroon;
+    border-radius: 25px;
+    transition: 0.5s;
+}
+
+.result h1{
+    font-size: 0px;
+    margin: 20px auto;
+    font-family: monospace;
+    transition: 0.7s;
+}
+
+.result p{
+    font-size: 0px;
+    transition: 0.7s;
 }

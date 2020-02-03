@@ -13,9 +13,18 @@
 
 <body>
     <h1>Play MCQ</h1>
-    <a href="./index.html">See Questions</a> | <a href="../create mcq/questions.html">Add Questions</a>
-
+    <a href="/">See Questions</a> | <a href="../create mcq/">Add Questions</a>
+    <br><br>
     <input type="button" value="Show Questions" onclick="showQuestion()">
+
+    <div class="allQuestions"></div>
+
+    <input type="button" value="SUBMIT" onclick="submitted()">
+
+    <div class="result">
+        <h1>Result</h1>
+        <p>Your score is <span class="score"></span></p>
+    </div>
 
     <script src="./Jquery/jquery.js"></script>
     <script src="./index.js"></script>

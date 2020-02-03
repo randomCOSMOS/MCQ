@@ -1,6 +1,5 @@
 const name = (name) => {
-    let inputName =  'input[name="' + name + '"]';
-    return inputName;
+    return 'input[name="' + name + '"]';
 };
 
 const formSubmitted = () => {
@@ -31,9 +30,9 @@ const formSubmitted = () => {
     fetch("/sendQuestion", details)
         .then(Response => Response.json())
         .then(json => {
-            if (json.status == "Success") {
+            if (json.status === "Success") {
                 alert("Success");
-            }else{
+            } else {
                 alert("Please enter a Question!");
             }
         })
@@ -45,11 +44,12 @@ const formSubmitted = () => {
         .catch(err => console.error("Error in get: " + err));
 };
 
-const clearDatabase = () => {
-    fetch("/clearDatabase", {
-            method: "POST"
-        })
-        .then(Response => Response.text())
-        .then(json => console.log(json))
-        .catch(err => console.error("Error in clearing Data Base: " + err));
-}
+const clearDatabase = async () => {
+    const Response = await fetch("/clearDatabase");
+    try {
+        const text = await Response.text();
+        console.log(text);
+    } catch (e) {
+        console.error('Receiving response for clearing database: ' + e);
+    }
+};
