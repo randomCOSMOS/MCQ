@@ -2,7 +2,7 @@ const name = (name) => {
     return 'input[name="' + name + '"]';
 };
 
-const formSubmitted = () => {
+const formSubmitted = async () => {
     let question = $(name("question")).val();
     let optionA = $(name("optionA")).val();
     let optionB = $(name("optionB")).val();
@@ -27,21 +27,21 @@ const formSubmitted = () => {
         body: JSON.stringify(mcq)
     };
 
-    fetch("/sendQuestion", details)
-        .then(Response => Response.json())
-        .then(json => {
-            if (json.status === "Success") {
-                alert("Success");
-            } else {
-                alert("Please enter a Question!");
-            }
-        })
-        .catch(err => console.error("Error in post: " + err));
+    const Response = await fetch('/sendQuestion', details);
+    try {
+        const {status} = await Response.json();
+        if (status === "Success") {
+            alert("Success")
+        } else {
+            alert("Please enter a question")
+        }
+    } catch (e) {
+        console.error(`There was an error sending the question ${e}`)
+    }
 
-    fetch("/sendQuestion")
-        .then(Response => Response.json())
-        .then(json => console.log(json))
-        .catch(err => console.error("Error in get: " + err));
+    const Questions = await fetch('/sendQuestion');
+    const questionJson = await Questions.json();
+    console.log(questionJson);
 };
 
 const clearDatabase = async () => {
@@ -52,4 +52,8 @@ const clearDatabase = async () => {
     } catch (e) {
         console.error('Receiving response for clearing database: ' + e);
     }
+};
+
+const op = () => {
+    fetch('/op', {method: "POST"});
 };

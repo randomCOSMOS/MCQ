@@ -18,6 +18,7 @@ const showQuestion = async () => {
     }
 
     if (data.length !== 0) {
+        x = 0;
         for (let everyQuestion of data) {
             x++;
             question = everyQuestion.question;
@@ -61,9 +62,10 @@ const check = async () => {
     let finalResult;
     const Response = await fetch("/getScore");
     const json = await Response.json();
+    console.log(json)
     json.score > x * 0.8 ? finalResult = "PASS": finalResult = "FAIL";
     $(".score").html(json.score + "/" + x + "<br><br>Status: " + finalResult);
-    $(".result").css({"width": "70vw", "height": "50vh", "opacity": "1"});
+    $(".result").css({"width": "70vw", "height": "60vh", "opacity": "1"});
     $(".result h1").css("font-size", "100px");
     $(".result p").css("font-size", "60px");
 };
@@ -73,3 +75,5 @@ $(window).on("click", () => {
     $(".result h1").css("font-size", '0px');
     $(".result p").css("font-size", "0px");
 });
+
+$(document).ready(showQuestion);

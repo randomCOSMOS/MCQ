@@ -15,7 +15,7 @@
     <h1>Create MCQ</h1>
     <a href="/">See Questions</a> | <a href="../create mcq/">Add Questions</a>
 
-    <form>
+    <form action="/sendQuestion" method="POST">
         <label for="question">Add your question:</label>
         <input type="text" name="question" id="question">
         <br>
@@ -33,6 +33,8 @@
         <input onclick="formSubmitted()" type="button" value="SUBMIT">
         <input onclick="clearDatabase()" type="button" value="Clear Data base">
     </form>
+
+    <input onclick="op()" type="button" value="ksksk">
 
 
     <script src="../Jquery/jquery.js"></script>

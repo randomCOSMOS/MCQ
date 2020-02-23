@@ -1,4 +1,12 @@
 const express = require('express');
+const {Client} = require('pg');
+const client = new Client({
+    user: 'cosmos',
+    password: 'o',
+    port: 3500,
+    host: 'localhost',
+    database: 'MCQ'
+});
 const Datastore = require('nedb');
 const db = new Datastore('question.db');
 const app = express();
@@ -66,8 +74,8 @@ app.get("/clearDatabase", (req, res) => {
 let score = 0;
 
 app.post("/check", (req, res) => {
-    let data = req.body;
     score = 0;
+    let data = req.body;
     for (let arrays of data) {
         db.find({question: arrays[0]}, (err, doc) => {
             let correctAnswer = doc[0].correct;
@@ -92,6 +100,22 @@ app.get("/sendQuestion", (req, res) => {
 });
 
 app.get("/getScore", (req, res) => {
-    // console.log("score");
     res.json({score});
-});1
+});
+
+app.post("/op", async (req, res) => {
+    try {
+        await client.connect();
+        console.log(`Connected`);
+        await client.query("BEGIN");
+        await client.query('insert into questions ("questions","optiona") values ($1, $2)', ["djldjld","jflkfjs"] )
+        await client.query("COMMIT");
+        const {rows} = await client.query("select * from questions");
+        console.table(rows);
+    } catch (e) {
+        console.error("there was an error: " + e)
+    } finally {
+        await client.end();
+        console.log("Disconnected")
+    }
+});
