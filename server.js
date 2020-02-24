@@ -1,26 +1,34 @@
 const express = require('express');
-const {Client} = require('pg');
+const {Pool} = require('pg');
 require('dotenv').config();
-const client = new Client({
-    user: process.env.user,
-    password: process.env.password,
-    port: process.env.pport,
-    host: process.env.host,
-    database: process.env.database
-});
 const Datastore = require('nedb');
 const db = new Datastore('question.db');
 const app = express();
 const port = process.env.PORT || 3000;
+
+const server = "production";
+let pool;
+
+if (server === "production") {
+    pool = new Pool({
+        connectionString: process.env.DATABASE_URL,
+        ssl: true,
+    });
+} else {
+    pool = new Pool({
+        user: process.env.D_user,
+        password: process.env.D_password,
+        port: process.env.D_pport,
+        host: process.env.D_host,
+        database: process.env.D_database
+    });
+}
 
 app.listen(port, () => console.log(`Server listening at ${port}!`));
 app.use(express.static('public'));
 app.use(express.json({
     limit: "1mb"
 }));
-
-let ok = process.env;
-// console.log(ok)
 
 class questionStore {
     constructor(question, optionA, optionB, optionC, correct) {
@@ -39,7 +47,7 @@ app.post("/sendQuestion", async (req, res) => {
 
     if (data.question !== "") {
         // await client.connect();
-        await client.query('insert into questions ("questions", "optiona", "optionb", "optionc", "correct") values ($1,$2,$3,$4,$5)',
+        await pool.query('insert into questions ("questions", "optiona", "optionb", "optionc", "correct") values ($1,$2,$3,$4,$5)',
             [data.question, data.optionA, data.optionB, data.optionC, data.correct]);
         console.log(`Added`);
         // await client.query('COMMIT');
@@ -90,7 +98,7 @@ app.post("/check", (req, res) => {
             console.log("Your Answer: " + yourAnswer);
         });
     }
-    client.end();
+    pool.end();
     console.log('Disconnected!')
     res.send("ok");
 });
@@ -107,10 +115,12 @@ app.get("/getScore", (req, res) => {
 
 app.post('/op', async (req, res) => {
     try {
-        await client.connect();
+        await pool.connect();
         console.log("Connected");
-    }catch (e) {
+    } catch (e) {
         console.log(`Something wnt wrong ${e}`)
     }
+
+    res.send("Connected");
 });
 

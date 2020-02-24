@@ -54,6 +54,8 @@ const clearDatabase = async () => {
     }
 };
 
-const op = () => {
-    fetch('/op', {method: "POST"})
+const op = async () => {
+    const Response = await fetch('/op', {method: "POST"});
+    const text = await Response.text();
+    console.log(text);
 };
