@@ -6,10 +6,9 @@ const db = new Datastore('question.db');
 const app = express();
 const port = process.env.PORT || 3000;
 
-const server = "production";
 let pool;
 
-if (server === "production") {
+if (process.env.DATABASE_URL) {
     pool = new Pool({
         connectionString: process.env.DATABASE_URL,
         ssl: true,
