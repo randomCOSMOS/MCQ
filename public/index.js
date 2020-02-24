@@ -77,3 +77,4 @@ $(window).on("click", () => {
 });
 
 $(document).ready(showQuestion);
+

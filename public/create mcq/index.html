@@ -17,24 +17,24 @@
 
     <form action="/sendQuestion" method="POST">
         <label for="question">Add your question:</label>
-        <input type="text" name="question" id="question">
+        <input type="text" name="question" id="question" tabindex="1">
         <br>
 
         <label for="options">Enter options:</label>
-        a) <input type="text" name="optionA" id="options">
-        b) <input type="text" name="optionB" id="options">
-        c) <input type="text" name="optionC" id="options">
+        a) <input type="text" name="optionA" id="options" tabindex="2">
+        b) <input type="text" name="optionB" id="options" tabindex="3">
+        c) <input type="text" name="optionC" id="options" tabindex="4">
         <br>
 
         <label for="correctOption">Enter corrct option:</label>
-        <input type="text" name="Correct Option" id="correctOption">
+        <input type="text" name="Correct Option" id="correctOption" tabindex="5">
         <br>
 
-        <input onclick="formSubmitted()" type="button" value="SUBMIT">
+        <input onclick="formSubmitted()" type="button" value="SUBMIT" tabindex="6">
         <input onclick="clearDatabase()" type="button" value="Clear Data base">
     </form>
 
-    <input onclick="op()" type="button" value="ksksk">
+    <input onclick="op()" type="button" value="Connect">
 
 
     <script src="../Jquery/jquery.js"></script>

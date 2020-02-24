@@ -55,5 +55,5 @@ const clearDatabase = async () => {
 };
 
 const op = () => {
-    fetch('/op', {method: "POST"});
+    fetch('/op', {method: "POST"})
 };

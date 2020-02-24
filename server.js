@@ -1,11 +1,12 @@
 const express = require('express');
 const {Client} = require('pg');
+require('dotenv').config();
 const client = new Client({
-    user: 'cosmos',
-    password: 'o',
-    port: 3500,
-    host: 'localhost',
-    database: 'MCQ'
+    user: process.env.user,
+    password: process.env.password,
+    port: process.env.pport,
+    host: process.env.host,
+    database: process.env.database
 });
 const Datastore = require('nedb');
 const db = new Datastore('question.db');
@@ -18,6 +19,8 @@ app.use(express.json({
     limit: "1mb"
 }));
 
+let ok = process.env;
+// console.log(ok)
 
 class questionStore {
     constructor(question, optionA, optionB, optionC, correct) {
@@ -31,17 +34,15 @@ class questionStore {
 
 db.loadDatabase();
 
-app.post("/sendQuestion", (req, res) => {
+app.post("/sendQuestion", async (req, res) => {
     let data = req.body;
 
     if (data.question !== "") {
-        let Question = new questionStore(data.question, data.optionA, data.optionB, data.optionC, data.correct);
-        db.insert(Question, (err, doc) => {
-            console.log("Inserted " + doc.question + " with ID " + doc._id);
-            if (err) {
-                console.error(err);
-            }
-        });
+        // await client.connect();
+        await client.query('insert into questions ("questions", "optiona", "optionb", "optionc", "correct") values ($1,$2,$3,$4,$5)',
+            [data.question, data.optionA, data.optionB, data.optionC, data.correct]);
+        console.log(`Added`);
+        // await client.query('COMMIT');
 
         res.json({
             status: "Success"
@@ -89,7 +90,8 @@ app.post("/check", (req, res) => {
             console.log("Your Answer: " + yourAnswer);
         });
     }
-
+    client.end();
+    console.log('Disconnected!')
     res.send("ok");
 });
 
@@ -103,19 +105,12 @@ app.get("/getScore", (req, res) => {
     res.json({score});
 });
 
-app.post("/op", async (req, res) => {
+app.post('/op', async (req, res) => {
     try {
         await client.connect();
-        console.log(`Connected`);
-        await client.query("BEGIN");
-        await client.query('insert into questions ("questions","optiona") values ($1, $2)', ["djldjld","jflkfjs"] )
-        await client.query("COMMIT");
-        const {rows} = await client.query("select * from questions");
-        console.table(rows);
-    } catch (e) {
-        console.error("there was an error: " + e)
-    } finally {
-        await client.end();
-        console.log("Disconnected")
+        console.log("Connected");
+    }catch (e) {
+        console.log(`Something wnt wrong ${e}`)
     }
 });
+
