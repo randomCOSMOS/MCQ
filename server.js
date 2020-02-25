@@ -1,11 +1,13 @@
+// requiring stuff
 const express = require('express');
 const {Pool} = require('pg');
 require('dotenv').config();
 const app = express();
 const port = process.env.PORT || 3000;
 
-let pool;
+let pool, score = 0;
 
+// connecting to data base
 if (process.env.DATABASE_URL) {
     pool = new Pool({
         connectionString: process.env.DATABASE_URL,
@@ -21,12 +23,14 @@ if (process.env.DATABASE_URL) {
     });
 }
 
+// starting server
 app.listen(port, () => console.log(`Server listening at ${port}!`));
 app.use(express.static('public'));
 app.use(express.json({
     limit: "1mb"
 }));
 
+// post requests
 app.post("/sendQuestion", async (req, res) => {
     let data = req.body;
 
@@ -45,29 +49,22 @@ app.post("/sendQuestion", async (req, res) => {
     }
 });
 
-let score = 0;
-
-app.post("/check", (req, res) => {
+app.post("/check", async (req, res) => {
     score = 0;
     let data = req.body;
-    for (let arrays of data) {
-        db.find({question: arrays[0]}, (err, doc) => {
-            let correctAnswer = doc[0].correct;
-            let yourAnswer = arrays[1];
-            if (yourAnswer === correctAnswer) {
-                score++;
-            }
-            console.log("");
-            console.log(score);
-            console.log("Correct answer: " + correctAnswer);
-            console.log("Your Answer: " + yourAnswer);
-        });
+    for (let array of data){
+        console.log(array);
+        let {rows} = await pool.query(`select correct from ${process.env.D_table} where questions=$1`, [array[0]]);
+        let {correct} = rows[0];
+        console.log(correct);
+        if (array[1] === correct){
+            score++
+        }
     }
-    pool.end();
-    console.log('Disconnected!');
-    res.send("ok");
+    res.json({score});
 });
 
+// get requests
 app.get("/sendQuestion", async (req, res) => {
     const {rows} = await pool.query('select * from questions');
     res.json(rows);

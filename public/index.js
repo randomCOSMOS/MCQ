@@ -23,7 +23,7 @@ const showQuestion = async () => {
         for (let everyQuestion of data) {
             x++;
             question = everyQuestion.questions;
-            optionA = everyQuestion.optionc;
+            optionA = everyQuestion.optiona;
             optionB = everyQuestion.optionb;
             optionC = everyQuestion.optionc;
 
@@ -55,8 +55,6 @@ const submitted = async () => {
         body: JSON.stringify(answers)
     };
 
-    console.log(answers);
-
     fetch("/check", details)
         .then(() => check());
 };
@@ -64,10 +62,11 @@ const submitted = async () => {
 const check = async () => {
     let finalResult;
     const Response = await fetch("/getScore");
-    const json = await Response.json();
-    console.log(json);
-    json.score > x * 0.8 ? finalResult = "PASS" : finalResult = "FAIL";
-    $(".score").html(json.score + "/" + x + "<br><br>Status: " + finalResult);
+    const {score} = await Response.json();
+    console.log(score);
+    score >= x * 0.8 ? finalResult = "PASS" : finalResult = "FAIL";
+
+    $(".score").html(score + "/" + x + "<br><br>Status: " + finalResult);
     $(".result").css({"width": "70vw", "height": "60vh", "opacity": "1"});
     $(".result h1").css("font-size", "100px");
     $(".result p").css("font-size", "60px");
