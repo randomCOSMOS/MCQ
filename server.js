@@ -57,7 +57,7 @@ app.post("/check", async (req, res) => {
         let {rows} = await pool.query(`select correct from ${process.env.D_table} where questions=$1`, [array[0]]);
         let {correct} = rows[0];
         console.log(correct);
-        if (array[1] === correct){
+        if (array[1].toLowerCase() === correct){
             score++
         }
     }

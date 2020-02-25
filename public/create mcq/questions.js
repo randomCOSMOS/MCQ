@@ -7,7 +7,7 @@ const formSubmitted = async () => {
     let optionA = $(name("optiona")).val();
     let optionC = $(name("optionc")).val();
     let optionB = $(name("optionb")).val();
-    let correct = $("#correctOption").val();
+    let correct = $("#correctOption").val().toLowerCase();
 
     $("#questions, #options, #correctOption").val("");
 
