@@ -69,15 +69,10 @@ app.post("/check", (req, res) => {
 });
 
 app.get("/sendQuestion", async (req, res) => {
-    const data = req.body;
     const {rows} = await pool.query('select * from questions');
     res.json(rows);
 });
 
 app.get("/getScore", (req, res) => {
     res.json({score});
-});
-
-app.get('/op', async (req, res) => {
-
 });

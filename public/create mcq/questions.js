@@ -5,11 +5,11 @@ const name = (name) => {
 const formSubmitted = async () => {
     let question = $(name("questions")).val();
     let optionA = $(name("optiona")).val();
-    let optionB = $(name("optionb")).val();
     let optionC = $(name("optionc")).val();
+    let optionB = $(name("optionb")).val();
     let correct = $("#correctOption").val();
 
-    $("#question, #options, #correctOption").val("");
+    $("#questions, #options, #correctOption").val("");
 
     let mcq = {
         question,
@@ -42,10 +42,4 @@ const formSubmitted = async () => {
     const Questions = await fetch('/sendQuestion');
     const questionJson = await Questions.json();
     console.log(questionJson);
-};
-
-const op = async () => {
-    const response = await fetch('/op');
-    const data = await response.json();
-    console.table(data);
 };
