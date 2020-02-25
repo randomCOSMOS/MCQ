@@ -12,6 +12,7 @@ const showQuestion = async () => {
 
     try {
         data = await Response.json();
+        console.table(data)
     } catch (e) {
         console.warn("Failed to get data!");
         console.error(e);
@@ -21,10 +22,10 @@ const showQuestion = async () => {
         x = 0;
         for (let everyQuestion of data) {
             x++;
-            question = everyQuestion.question;
-            optionA = everyQuestion.optionA;
-            optionB = everyQuestion.optionB;
-            optionC = everyQuestion.optionC;
+            question = everyQuestion.questions;
+            optionA = everyQuestion.optionc;
+            optionB = everyQuestion.optionb;
+            optionC = everyQuestion.optionc;
 
             const visibleQuestion = "<h3>Q." + question + "</h3>";
             const visibleOptionA = "<h4>a)" + optionA + "</h4>";
@@ -54,6 +55,8 @@ const submitted = async () => {
         body: JSON.stringify(answers)
     };
 
+    console.log(answers);
+
     fetch("/check", details)
         .then(() => check());
 };
@@ -62,8 +65,8 @@ const check = async () => {
     let finalResult;
     const Response = await fetch("/getScore");
     const json = await Response.json();
-    console.log(json)
-    json.score > x * 0.8 ? finalResult = "PASS": finalResult = "FAIL";
+    console.log(json);
+    json.score > x * 0.8 ? finalResult = "PASS" : finalResult = "FAIL";
     $(".score").html(json.score + "/" + x + "<br><br>Status: " + finalResult);
     $(".result").css({"width": "70vw", "height": "60vh", "opacity": "1"});
     $(".result h1").css("font-size", "100px");

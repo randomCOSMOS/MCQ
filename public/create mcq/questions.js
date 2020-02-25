@@ -3,10 +3,10 @@ const name = (name) => {
 };
 
 const formSubmitted = async () => {
-    let question = $(name("question")).val();
-    let optionA = $(name("optionA")).val();
-    let optionB = $(name("optionB")).val();
-    let optionC = $(name("optionC")).val();
+    let question = $(name("questions")).val();
+    let optionA = $(name("optiona")).val();
+    let optionB = $(name("optionb")).val();
+    let optionC = $(name("optionc")).val();
     let correct = $("#correctOption").val();
 
     $("#question, #options, #correctOption").val("");
@@ -44,18 +44,8 @@ const formSubmitted = async () => {
     console.log(questionJson);
 };
 
-const clearDatabase = async () => {
-    const Response = await fetch("/clearDatabase");
-    try {
-        const text = await Response.text();
-        console.log(text);
-    } catch (e) {
-        console.error('Receiving response for clearing database: ' + e);
-    }
-};
-
 const op = async () => {
-    const Response = await fetch('/op', {method: "POST"});
-    const text = await Response.text();
-    console.log(text);
+    const response = await fetch('/op');
+    const data = await response.json();
+    console.table(data);
 };

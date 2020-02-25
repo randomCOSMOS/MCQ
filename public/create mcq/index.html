@@ -15,15 +15,15 @@
     <h1>Create MCQ</h1>
     <a href="/">See Questions</a> | <a href="../create mcq/">Add Questions</a>
 
-    <form action="/sendQuestion" method="POST">
-        <label for="question">Add your question:</label>
-        <input type="text" name="question" id="question" tabindex="1">
+    <form>
+        <label for="questions">Add your question:</label>
+        <input type="text" name="questions" id="questions" tabindex="1">
         <br>
 
         <label for="options">Enter options:</label>
-        a) <input type="text" name="optionA" id="options" tabindex="2">
-        b) <input type="text" name="optionB" id="options" tabindex="3">
-        c) <input type="text" name="optionC" id="options" tabindex="4">
+        a) <input type="text" name="optiona" id="options" tabindex="2">
+        b) <input type="text" name="optionb" id="options" tabindex="3">
+        c) <input type="text" name="optionc" id="options" tabindex="4">
         <br>
 
         <label for="correctOption">Enter corrct option:</label>
@@ -31,11 +31,9 @@
         <br>
 
         <input onclick="formSubmitted()" type="button" value="SUBMIT" tabindex="6">
-        <input onclick="clearDatabase()" type="button" value="Clear Data base">
     </form>
 
-    <input onclick="op()" type="button" value="Connect">
-
+    <input type="button" value="op" onclick="op()">
 
     <script src="../Jquery/jquery.js"></script>
     <script src="./questions.js"></script>

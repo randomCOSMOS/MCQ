@@ -1,8 +1,6 @@
 const express = require('express');
 const {Pool} = require('pg');
 require('dotenv').config();
-const Datastore = require('nedb');
-const db = new Datastore('question.db');
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -29,27 +27,13 @@ app.use(express.json({
     limit: "1mb"
 }));
 
-class questionStore {
-    constructor(question, optionA, optionB, optionC, correct) {
-        this.question = question;
-        this.optionA = optionA;
-        this.optionB = optionB;
-        this.optionC = optionC;
-        this.correct = correct;
-    }
-}
-
-db.loadDatabase();
-
 app.post("/sendQuestion", async (req, res) => {
     let data = req.body;
 
     if (data.question !== "") {
-        // await client.connect();
-        await pool.query('insert into questions ("questions", "optiona", "optionb", "optionc", "correct") values ($1,$2,$3,$4,$5)',
+        await pool.query(`insert into ${process.env.D_table} ("questions", "optiona", "optionb", "optionc", "correct") values ($1,$2,$3,$4,$5)`,
             [data.question, data.optionA, data.optionB, data.optionC, data.correct]);
         console.log(`Added`);
-        // await client.query('COMMIT');
 
         res.json({
             status: "Success"
@@ -59,24 +43,6 @@ app.post("/sendQuestion", async (req, res) => {
             status: "No question"
         });
     }
-});
-
-app.get("/clearDatabase", (req, res) => {
-    db.remove({}, {
-            multi: true
-        },
-        (err, numRemoved) => {
-
-            if (err) {
-                res.json({
-                    err
-                });
-            } else {
-                res.send("Cleared " + numRemoved + " entries");
-                console.log("Data Base Cleared");
-            }
-
-        })
 });
 
 let score = 0;
@@ -98,28 +64,20 @@ app.post("/check", (req, res) => {
         });
     }
     pool.end();
-    console.log('Disconnected!')
+    console.log('Disconnected!');
     res.send("ok");
 });
 
-app.get("/sendQuestion", (req, res) => {
-    db.find({}, (err, doc) => {
-        res.json(doc);
-    });
+app.get("/sendQuestion", async (req, res) => {
+    const data = req.body;
+    const {rows} = await pool.query('select * from questions');
+    res.json(rows);
 });
 
 app.get("/getScore", (req, res) => {
     res.json({score});
 });
 
-app.post('/op', async (req, res) => {
-    try {
-        await pool.connect();
-        console.log("Connected");
-    } catch (e) {
-        console.log(`Something wnt wrong ${e}`)
-    }
+app.get('/op', async (req, res) => {
 
-    res.send("Connected");
 });
-
