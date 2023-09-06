@@ -1,4 +1,4 @@
-# MCQ (Currently deprecated becuaese of Database Error)
+# MCQ 
 It's a Express.js project. Just an experiment. 😁 Now added postgreSQL as DATABASE.
 
 You can use this project as a template.
